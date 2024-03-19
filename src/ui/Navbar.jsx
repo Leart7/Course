@@ -10,26 +10,48 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Logo from "./Logo";
 import { useModalCloser } from "../hooks/useModalCloser";
 import SearchingModal from "../features/Searching/SearchingModal";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CategoriesDropdown from "../features/NavbarCategories/CategoriesDropdown";
 import { faBell, faHeart } from "@fortawesome/free-regular-svg-icons";
 import SearchInput from "../features/Searching/SearchInput";
+import AdminDropdown from "../features/AdminsLinks/AdminDropdown";
 
 const circleStyle = `flex h-10 w-10 items-center justify-center rounded-full bg-transparent hover:cursor-pointer hover:bg-stone-100 hover:text-blue-600 text-xl`;
 
 function Navbar() {
   const [clickedModal, setClickedModal] = useModalCloser();
   const [showCategoriesDropdown, setShowCategoriesDropdown] = useState(false);
+  const [showAdminDropdown, setShowAdminDropdown] = useState(false);
+
+  const adminDropdownButton = useRef();
+
+  useEffect(
+    function () {
+      function handleClickOutside(e) {
+        if (
+          adminDropdownButton.current &&
+          !adminDropdownButton.current.contains(e.target)
+        ) {
+          setShowAdminDropdown(false);
+        }
+      }
+
+      if (showAdminDropdown) {
+        document.addEventListener("click", handleClickOutside);
+      }
+
+      return () => {
+        document.removeEventListener("click", handleClickOutside);
+      };
+    },
+    [showAdminDropdown],
+  );
 
   return (
     <header className="fixed left-0 right-0 top-0 z-50 bg-white shadow-sm">
       <nav className="flex items-center justify-between px-3 py-5 md:px-10">
         <div className="flex items-center gap-x-4">
           <Logo />
-          <FontAwesomeIcon
-            icon={faLayerGroup}
-            className="text-lg hover:cursor-pointer lg:hidden"
-          />
           <button
             onMouseEnter={() => setShowCategoriesDropdown(true)}
             onMouseLeave={() => setShowCategoriesDropdown(false)}
@@ -37,7 +59,11 @@ function Navbar() {
           >
             <FontAwesomeIcon icon={faLayerGroup} className="text-lg" />{" "}
             Categories
-            {showCategoriesDropdown && <CategoriesDropdown />}
+            {showCategoriesDropdown && (
+              <CategoriesDropdown
+                setShowCategoriesDropdown={setShowCategoriesDropdown}
+              />
+            )}
           </button>
         </div>
         <SearchInput />
@@ -66,8 +92,13 @@ function Navbar() {
             <FontAwesomeIcon icon={faBell} />
           </div>
 
-          <div className={`${circleStyle}`}>
+          <div
+            ref={adminDropdownButton}
+            onClick={() => setShowAdminDropdown(!showAdminDropdown)}
+            className={`${circleStyle} relative`}
+          >
             <FontAwesomeIcon icon={faUser} />
+            {showAdminDropdown && <AdminDropdown />}
           </div>
 
           <div className={`${circleStyle} lg:hidden`}>

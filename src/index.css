@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  min-height: 100%;
+  box-sizing: inherit;
+}
+
 * {
   transition: all 0.2s ease-in-out;
 }
@@ -13,6 +25,28 @@
 
 .courseImage {
   clip-path: ellipse(65% 95% at 50% 0%);
+}
+
+.border-gradient {
+  position: relative;
+}
+.border-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  padding: 3px;
+  background: linear-gradient(
+    45deg,
+    rgb(37 99 235),
+    rgb(99 102 241),
+    rgb(168 85 247)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
 }
 
 .transition-fade-in {

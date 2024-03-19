@@ -16,10 +16,13 @@ const activeStatusesSlice = createSlice({
         (s) => s !== action.payload,
       );
     },
+    removeAllStatuses(state) {
+      state.activeStatuses = [];
+    },
   },
 });
 
-export const { setActiveStatus, removeActiveStatus } =
+export const { setActiveStatus, removeActiveStatus, removeAllStatuses } =
   activeStatusesSlice.actions;
 
 export default activeStatusesSlice.reducer;
