@@ -1,12 +1,18 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCourses } from "../../reactQuery/useCourses";
 import CourseOverview from "../../ui/CourseOverview";
 import GradientButton from "../../ui/GradientButton";
 import HomeSectionIntro from "../../ui/HomeSectionIntro";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { usePopularCourses } from "../../reactQuery/usePopularCourses";
+import { useNavigate } from "react-router";
 
 function PopularCourses() {
-  const { courses } = useCourses();
+  const { popularCourses } = usePopularCourses();
+  const navigate = useNavigate();
+
+  function loadCourses() {
+    navigate("/courses");
+  }
 
   return (
     <section className="mt-36">
@@ -16,12 +22,16 @@ function PopularCourses() {
       </h2>
 
       <div className="mx-auto my-10 flex flex-col justify-center gap-y-6 px-3 pb-10 md:w-[90%] md:flex-row md:flex-wrap md:items-center md:gap-x-4">
-        {courses?.map((course) => (
+        {popularCourses?.map((course) => (
           <CourseOverview key={course.id} course={course} />
         ))}
       </div>
 
-      <GradientButton text="Load more courses" xPosition="mx-auto">
+      <GradientButton
+        text="Load more courses"
+        xPosition="mx-auto"
+        customFn={loadCourses}
+      >
         <FontAwesomeIcon icon={faArrowRight} className="ms-2" />
       </GradientButton>
     </section>

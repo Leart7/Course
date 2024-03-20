@@ -5,7 +5,7 @@ function CategoriesDropdown({ setShowCategoriesDropdown }) {
   const { categories } = useCategories();
 
   return (
-    <div className="absolute left-0 top-full flex w-72 flex-col rounded-lg border bg-white px-5 py-7 shadow-md hover:cursor-default ">
+    <div className="unselectable absolute left-0 top-full z-20 flex w-72 flex-col rounded-lg border bg-white px-5 py-7 shadow-md hover:cursor-default ">
       {categories?.map((category) => (
         <Link
           onClick={() => setShowCategoriesDropdown(false)}

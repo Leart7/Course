@@ -1,7 +1,13 @@
 import ModalXCloser from "./ModalXCloser";
 import ModalCancelCloser from "./ModalCancelCloser";
 
-function ConfirmDeleteModal({ setClickedModal, item, title, deleteFunction }) {
+function ConfirmDeleteModal({
+  setClickedModal,
+  item,
+  title,
+  deleteFunction,
+  children,
+}) {
   return (
     <div className="fixed inset-0 z-[500000] h-full w-full bg-white shadow-2xl lg:left-1/2 lg:top-1/2 lg:h-[40%] lg:w-[38rem] lg:-translate-x-1/2 lg:-translate-y-1/2 lg:transform lg:overflow-y-auto lg:rounded-lg">
       <ModalXCloser setClickedModal={setClickedModal} />
@@ -13,10 +19,7 @@ function ConfirmDeleteModal({ setClickedModal, item, title, deleteFunction }) {
           Are you sure you want to delete <strong>{item.name}</strong>{" "}
           permanently?
         </p>
-        <p>
-          Courses with <strong>{item.name}</strong> will remain without a
-          category!
-        </p>
+        {children}
       </div>
 
       <div className="py-5">

@@ -1,5 +1,6 @@
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 function Banner() {
   return (
@@ -16,9 +17,12 @@ function Banner() {
             <button className="rounded-md border bg-orange-500 px-5 py-3 font-bold text-white hover:bg-orange-600 lg:py-4 ">
               Get Started
             </button>
-            <button className="rounded-md border px-5 py-3 font-bold text-white hover:scale-105 hover:transform lg:py-4">
+            <Link
+              to="/courses"
+              className="rounded-md border px-5 py-3 font-bold text-white hover:scale-105 hover:transform lg:py-4"
+            >
               Explore Courses <FontAwesomeIcon icon={faArrowRight} />
-            </button>
+            </Link>
           </div>
         </div>
         <img

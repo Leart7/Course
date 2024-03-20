@@ -74,7 +74,12 @@ function CategoryCard({ category, from }) {
             title="Category"
             item={category}
             deleteFunction={removeCategory}
-          />
+          >
+            <p>
+              Courses with <strong>{category.name}</strong> will remain without
+              a category!
+            </p>
+          </ConfirmDeleteModal>
           <Overlay />
         </>
       )}

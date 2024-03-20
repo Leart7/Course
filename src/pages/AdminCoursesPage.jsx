@@ -1,10 +1,10 @@
 import { useSearchParams } from "react-router-dom";
+import { useCourses } from "../reactQuery/useCourses";
 import CoursesHeader from "../features/Courses/CoursesHeader";
 import CoursesList from "../features/Courses/CoursesList";
-import { useCourses } from "../reactQuery/useCourses";
 import Pagination from "../ui/Pagination";
 
-function CoursesPage() {
+function AdminCoursesPage() {
   const [searchParams] = useSearchParams();
 
   const { courses } = useCourses({
@@ -15,11 +15,11 @@ function CoursesPage() {
 
   return (
     <>
-      <CoursesHeader totalCourses={courses?.totalCourses} />
-      <CoursesList courses={courses} />
+      <CoursesHeader totalCourses={courses?.totalCourses} from="admin" />
+      <CoursesList courses={courses} from="admin" />
       <Pagination totalPages={courses?.totalPages} />
     </>
   );
 }
 
-export default CoursesPage;
+export default AdminCoursesPage;

@@ -15,6 +15,7 @@ import CategoriesDropdown from "../features/NavbarCategories/CategoriesDropdown"
 import { faBell, faHeart } from "@fortawesome/free-regular-svg-icons";
 import SearchInput from "../features/Searching/SearchInput";
 import AdminDropdown from "../features/AdminsLinks/AdminDropdown";
+import { useLocation } from "react-router";
 
 const circleStyle = `flex h-10 w-10 items-center justify-center rounded-full bg-transparent hover:cursor-pointer hover:bg-stone-100 hover:text-blue-600 text-xl`;
 
@@ -22,6 +23,7 @@ function Navbar() {
   const [clickedModal, setClickedModal] = useModalCloser();
   const [showCategoriesDropdown, setShowCategoriesDropdown] = useState(false);
   const [showAdminDropdown, setShowAdminDropdown] = useState(false);
+  const location = useLocation();
 
   const adminDropdownButton = useRef();
 
@@ -66,7 +68,8 @@ function Navbar() {
             )}
           </button>
         </div>
-        <SearchInput />
+        {location.pathname !== "/courses" &&
+          location.pathname !== "/courses/admin" && <SearchInput />}
         <div className="flex items-center gap-x-4 text-lg md:gap-x-7">
           <div
             role="button"

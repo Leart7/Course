@@ -10,7 +10,7 @@ function AdminDropdown() {
         Categories
       </Link>
       <Link
-        to="/courses"
+        to="/courses/admin"
         className="rounded-md py-3 ps-5 text-start font-medium text-stone-500 hover:bg-stone-50 hover:text-blue-600"
       >
         Courses
