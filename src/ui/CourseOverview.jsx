@@ -15,13 +15,18 @@ import Overlay from "./Overlay";
 import { useDeleteCourse } from "../reactQuery/useDeleteCourse";
 import CourseModal from "../features/Courses/CourseModal";
 import CourseStatusBadge from "./CourseStatusBadge";
+import AddEditCourseModal from "../features/Courses/Admin/AddEditCourseModal";
+import { useUpdateCourse } from "../reactQuery/useUpdateCourse";
 
 function CourseOverview({ course, from }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isAdminHovered, setIsAdminHovered] = useState(false);
   const [clickedModal, setClickedModal] = useModalCloser();
   const [clickedDetailedModal, setClickedDetailedModal] = useModalCloser();
+  const [clickedUpdateModal, setClickedUpdateModal] = useModalCloser();
+
   const { deleteCourse } = useDeleteCourse();
+  const { updateCourse } = useUpdateCourse();
 
   const courseName =
     course?.name?.length > 60 ? course.name.slice(0, 60) + "..." : course.name;
@@ -63,7 +68,7 @@ function CourseOverview({ course, from }) {
         <div
           className={`${isHovered ? "bg-blue-600" : "bg-orange-500"} courseImage relative pb-2`}
         >
-          <img src={course.cover} className="courseImage w-full " />
+          <img src={course.cover} className="courseImage h-[19rem] w-full " />
         </div>
         <div className="-mt-8 flex flex-col gap-y-4 p-5">
           <div className="flex items-center justify-between">
@@ -107,14 +112,20 @@ function CourseOverview({ course, from }) {
         {isAdminHovered && (
           <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-lg border bg-white p-1 text-3xl">
             <div
-              onClick={() => setClickedUpdateModal(true)}
-              className="rounded-lg p-2 text-green-700 hover:cursor-pointer hover:bg-blue-200"
+              onClick={(e) => {
+                e.stopPropagation();
+                setClickedUpdateModal(true);
+              }}
+              className="rounded-lg px-4 py-2 text-green-700 hover:cursor-pointer hover:bg-blue-200"
             >
               <FontAwesomeIcon icon={faPencil} />
             </div>
             <div
-              onClick={() => setClickedModal(true)}
-              className="rounded-lg p-2 text-red-700 hover:cursor-pointer hover:bg-blue-200"
+              onClick={(e) => {
+                e.stopPropagation();
+                setClickedModal(true);
+              }}
+              className="rounded-lg px-4 py-2 text-red-700 hover:cursor-pointer hover:bg-blue-200"
             >
               <FontAwesomeIcon icon={faTrash} />
             </div>
@@ -137,6 +148,17 @@ function CourseOverview({ course, from }) {
           <CourseModal
             course={course}
             setClickedModal={setClickedDetailedModal}
+          />
+          <Overlay />
+        </>
+      )}
+      {clickedUpdateModal && (
+        <>
+          <AddEditCourseModal
+            setClickedModal={setClickedUpdateModal}
+            method="Update"
+            submitFunction={updateCourse}
+            course={course}
           />
           <Overlay />
         </>

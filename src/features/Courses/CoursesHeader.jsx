@@ -5,30 +5,55 @@ import {
   faList,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import NumberOfPaginatedResults from "../../ui/NumberOfPaginatedResults";
 import { pageSize } from "../../constants/constants";
 import Filters from "./Filters";
 import { useSearchParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { removeFilter, setFilter } from "../../redux/coursesFilterSlice";
+import { setView } from "../../redux/courseViewSlice";
 
 function CoursesHeader({ totalCourses, from }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const dispatch = useDispatch();
+  const { filterOpen } = useSelector((store) => store.filterOpen);
 
-  const [displayType, setDisplayType] = useState("grid");
+  const { courseView } = useSelector((store) => store.courseView);
+
   const [showFilters, setShowFilters] = useState(false);
 
   const inputRef = useRef();
+
+  useEffect(function () {
+    if (
+      filterOpen ||
+      searchParams?.has("category") ||
+      searchParams.has("status")
+    ) {
+      setShowFilters(true);
+      dispatch(setFilter());
+    }
+  }, []);
+
+  useEffect(
+    function () {
+      if (!searchParams.has("name")) {
+        inputRef.current.value = "";
+      }
+    },
+    [searchParams],
+  );
 
   return (
     <>
       <div className="h-fit min-h-[65vh] bg-gradient-to-br from-white via-blue-500 to-purple-800 px-5">
         <div className="mx-auto -mb-20 flex flex-col gap-y-5 md:w-[80%] lg:gap-y-8">
           <div className="pt-20 md:flex md:items-center md:gap-x-5 lg:pt-32 ">
-            <h1 className="text-4xl font-bold ">Courses</h1>
+            <h1 className="text-4xl font-bold ">
+              {searchParams?.get("category")} Courses
+            </h1>
             <div className="mt-5 w-fit rounded-full border border-white bg-blue-300 px-5 py-3 text-sm font-medium md:mt-0">
               <p>
                 <span>🎉</span> {totalCourses} Courses
@@ -44,16 +69,20 @@ function CoursesHeader({ totalCourses, from }) {
 
           <div className="lg:flex lg:items-center lg:justify-between">
             <div className="flex items-center gap-x-8">
-              <div className="flex w-fit items-center rounded-full bg-blue-300 p-2 shadow-sm">
+              <div className="flex w-fit items-center gap-x-1 rounded-full bg-blue-300 p-[0.35rem] shadow-md">
                 <p
-                  onClick={() => setDisplayType("grid")}
-                  className={`${displayType === "grid" ? "bg-white text-blue-600" : "bg-transparent text-black"} rounded-full px-5 py-1 font-medium hover:cursor-pointer`}
+                  onClick={() => {
+                    dispatch(setView("grid"));
+                  }}
+                  className={`${courseView === "grid" ? "bg-white text-blue-600" : "bg-transparent text-black"} rounded-full px-5 py-2 font-medium hover:cursor-pointer`}
                 >
                   <FontAwesomeIcon icon={faGrip} className=" text-sm" /> Grid
                 </p>
                 <p
-                  onClick={() => setDisplayType("list")}
-                  className={`${displayType === "list" ? "bg-white text-blue-600" : "bg-transparent text-black"} rounded-full px-5 py-1 font-medium hover:cursor-pointer`}
+                  onClick={() => {
+                    dispatch(setView("list"));
+                  }}
+                  className={`${courseView === "list" ? "bg-white text-blue-600" : "bg-transparent text-black"} rounded-full px-5 py-2 font-medium hover:cursor-pointer`}
                 >
                   <FontAwesomeIcon icon={faList} className="me-1 text-sm" />
                   List
@@ -72,7 +101,7 @@ function CoursesHeader({ totalCourses, from }) {
                   defaultValue={searchParams?.get("name")}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter" && searchQuery.length > 0) {
+                    if (e.key === "Enter") {
                       searchParams.set("name", searchQuery);
                       setSearchParams(searchParams);
                       window.scrollTo({ top: 300, behavior: "smooth" });

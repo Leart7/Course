@@ -11,9 +11,13 @@ function NumberOfPaginatedResults({ totalResults, pageSize }) {
       : firstNumber + pageSize - 1;
 
   return (
-    <p>
-      Showing {firstNumber}-{secondNumber} of {totalResults} results
-    </p>
+    <>
+      {totalResults > 0 && (
+        <p>
+          Showing {firstNumber}-{secondNumber} of {totalResults} results
+        </p>
+      )}
+    </>
   );
 }
 

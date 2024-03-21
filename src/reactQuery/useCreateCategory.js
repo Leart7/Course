@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createCategory as createCategoryApi } from "../services/apiCategories";
+import toast from "react-hot-toast";
 
 export function useCreateCategory() {
   const queryClient = useQueryClient();
@@ -10,6 +11,7 @@ export function useCreateCategory() {
       queryClient.invalidateQueries({
         queryKey: ["categories"],
       });
+      toast.success("Category created successfully.");
     },
   });
 

@@ -26,11 +26,18 @@ function CategoryCard({ category, from }) {
     deleteCategory(categoryId);
   }
 
+  const navigateToCoursesPage = (categoryName) => {
+    const encodedCategoryName = encodeURIComponent(categoryName);
+    navigate(`/courses/?category=${encodedCategoryName}`);
+  };
+
   return (
     <>
       <div
         onClick={() => {
-          if (from !== "admin") navigate(`/courses/?category=${category.id}`);
+          if (from !== "admin") {
+            navigateToCoursesPage(category.name);
+          }
         }}
         onMouseEnter={() => {
           if (from === "admin") setIsHovered(true);
@@ -43,7 +50,7 @@ function CategoryCard({ category, from }) {
         <img src={category.icon} className="h-20 w-20" />
         <p className="text-lg font-bold text-black">{category.name}</p>
         <p className="font-medium hover:cursor-pointer hover:text-blue-600">
-          25 Courses{" "}
+          {category?.coursesCount} Courses{" "}
           {from !== "admin" && (
             <FontAwesomeIcon icon={faArrowRight} className="ms-2" />
           )}
@@ -53,13 +60,13 @@ function CategoryCard({ category, from }) {
           <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform items-center gap-x-1 rounded-lg border bg-white p-1 text-3xl">
             <div
               onClick={() => setClickedUpdateModal(true)}
-              className="rounded-lg p-2 text-green-700 hover:cursor-pointer hover:bg-blue-200"
+              className="rounded-lg px-4 py-2 text-green-700 hover:cursor-pointer hover:bg-blue-200"
             >
               <FontAwesomeIcon icon={faPencil} />
             </div>
             <div
               onClick={() => setClickedModal(true)}
-              className="rounded-lg p-2 text-red-700 hover:cursor-pointer hover:bg-blue-200"
+              className="rounded-lg px-4 py-2 text-red-700 hover:cursor-pointer hover:bg-blue-200"
             >
               <FontAwesomeIcon icon={faTrash} />
             </div>

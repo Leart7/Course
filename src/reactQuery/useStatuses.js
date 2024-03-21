@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getStatuses } from "../services/apiStatuses";
+import { getStatuses } from "../services/apiConstants";
 
 export function useStatuses() {
   const { isLoading, data: statuses } = useQuery({

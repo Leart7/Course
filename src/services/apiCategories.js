@@ -19,6 +19,10 @@ export async function deleteCategory(categoryId) {
 }
 
 export async function createCategory(createCategoryObj) {
+  const customErrorMessages = {
+    409: "A Category with this name already exists!",
+  };
+
   const formData = new FormData();
 
   Object.keys(createCategoryObj).forEach((key) => {
@@ -26,7 +30,13 @@ export async function createCategory(createCategoryObj) {
   });
 
   try {
-    const response = await axiosRequest("post", "Category", formData);
+    const response = await axiosRequest(
+      "post",
+      "Category",
+      formData,
+      null,
+      customErrorMessages,
+    );
     return response;
   } catch (error) {
     throw new Error(error.message);
@@ -34,6 +44,10 @@ export async function createCategory(createCategoryObj) {
 }
 
 export async function updateCategory(categoryId, updateCategoryObj) {
+  const customErrorMessages = {
+    409: "A Category with this name already exists!",
+  };
+
   const formData = new FormData();
 
   Object.keys(updateCategoryObj).forEach((key) => {
@@ -45,6 +59,8 @@ export async function updateCategory(categoryId, updateCategoryObj) {
       "put",
       `Category/${categoryId}`,
       formData,
+      null,
+      customErrorMessages,
     );
     return response;
   } catch (error) {

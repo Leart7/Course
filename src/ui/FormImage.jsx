@@ -1,11 +1,18 @@
 import { faIcons } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function FormImage({ image, setSelectedFile, setValue, error }) {
+function FormImage({
+  property,
+  image,
+  setSelectedFile,
+  setValue,
+  error,
+  width,
+}) {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
-    setValue("icon", URL.createObjectURL(file));
+    setValue(property, URL.createObjectURL(file));
   };
 
   return (
@@ -16,7 +23,7 @@ function FormImage({ image, setSelectedFile, setValue, error }) {
             <img
               src={image}
               alt="Preview"
-              className="mx-auto h-20 w-20 cursor-pointer"
+              className={`${width ? width : "h-20 w-20"} mx-auto  cursor-pointer`}
             />
           </label>
           <p className="text-center text-sm text-red-600">{error}</p>
@@ -32,9 +39,9 @@ function FormImage({ image, setSelectedFile, setValue, error }) {
         <>
           <label
             htmlFor="image"
-            className={`${error && "border-red-600"} hover:bordtext-center relative mx-auto h-20 w-20 cursor-pointer rounded-md border-2 border-dashed px-5 text-center`}
+            className={`${error && "border-red-600"} ${width ? width : "h-20 w-20"} hover:bordtext-center relative mx-auto flex cursor-pointer items-center justify-center rounded-md border-2 border-dashed px-5 text-center`}
           >
-            <FontAwesomeIcon icon={faIcons} className="mt-4 text-4xl" />
+            <FontAwesomeIcon icon={faIcons} className="text-4xl" />
 
             <input
               type="file"
@@ -43,6 +50,7 @@ function FormImage({ image, setSelectedFile, setValue, error }) {
               onChange={handleFileChange}
             />
           </label>
+
           <p className="text-center text-sm text-red-600">{error}</p>
         </>
       )}

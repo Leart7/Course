@@ -1,10 +1,10 @@
 import ModalXCloser from "../../ui/ModalXCloser";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import CategoryModelFooter from "../../ui/CategoryModelFooter";
+import { useEffect, useState } from "react";
 import FormImage from "../../ui/FormImage";
 import { useCategorySubmition } from "../../hooks/useCategorySubmition";
 import CategoryNameInput from "../../ui/CategoryNameInput";
+import AddEditModelFooter from "../../ui/AddEditModelFooter";
 
 function AddCategoryModal({
   setClickedModal,
@@ -13,6 +13,9 @@ function AddCategoryModal({
   category,
 }) {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [requestError, setRequestError] = useState("");
+
+  const [imageError, setImageError] = useState("");
 
   const {
     register,
@@ -22,6 +25,7 @@ function AddCategoryModal({
     watch,
     setError,
     clearErrors,
+    trigger,
   } = useForm({
     defaultValues: {
       name: category?.name,
@@ -39,7 +43,24 @@ function AddCategoryModal({
     setClickedModal,
     image,
     categoryId: category?.id,
+    setRequestError,
+    trigger,
   });
+
+  function submit() {
+    if (!image) {
+      setImageError("Please choose a cover image");
+    }
+  }
+
+  useEffect(
+    function () {
+      if (image) {
+        setImageError("");
+      }
+    },
+    [image],
+  );
 
   return (
     <div className="fixed inset-0 z-[500000] h-full w-full bg-white shadow-2xl lg:left-1/2 lg:top-1/2 lg:h-fit lg:w-[38rem] lg:-translate-x-1/2 lg:-translate-y-1/2 lg:transform lg:overflow-y-auto lg:rounded-lg">
@@ -50,18 +71,26 @@ function AddCategoryModal({
       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         <div className="mt-3 flex flex-col gap-y-4 px-5">
           <FormImage
+            property="icon"
             image={image}
             setValue={setValue}
-            error={errors.image?.message}
+            error={imageError}
             setSelectedFile={setSelectedFile}
           />
 
-          <CategoryNameInput error={errors.name?.message} register={register} />
+          <CategoryNameInput
+            error={errors.name?.message}
+            register={register}
+            requestError={requestError}
+            setRequestError={setRequestError}
+          />
+          <p className="text-sm text-red-600">{requestError}</p>
         </div>
 
-        <CategoryModelFooter
+        <AddEditModelFooter
           setClickedModal={setClickedModal}
           btnText={method}
+          submit={submit}
         />
       </form>
     </div>

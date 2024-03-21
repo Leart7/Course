@@ -9,7 +9,8 @@ function AdminCoursesPage() {
 
   const { courses } = useCourses({
     name: searchParams?.get("name"),
-    status: searchParams?.get("status"),
+    category: searchParams?.get("category"),
+    status: searchParams?.getAll("status").join("&"),
     pageNumber: searchParams?.get("pageNumber") || 1,
   });
 

@@ -63,6 +63,7 @@ function Navbar() {
             Categories
             {showCategoriesDropdown && (
               <CategoriesDropdown
+                from="/"
                 setShowCategoriesDropdown={setShowCategoriesDropdown}
               />
             )}

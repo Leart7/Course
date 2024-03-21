@@ -1,23 +1,12 @@
-import { useEffect } from "react";
-
 export function useCategorySubmition({
   selectedFile,
-  setError,
-  clearErrors,
   submitFunction,
   setClickedModal,
   image,
   categoryId,
+  setRequestError,
 }) {
   function onSubmit(data) {
-    if (!image) {
-      setError("image", {
-        type: "manual",
-        message: "Please insert a descriptive icon",
-      });
-      return;
-    }
-
     const categoryData = {
       image: selectedFile || image,
       name: data.name,
@@ -33,6 +22,9 @@ export function useCategorySubmition({
           onSuccess: () => {
             setClickedModal(false);
           },
+          onError: (err) => {
+            setRequestError(err.message);
+          },
         },
       );
     } else {
@@ -40,18 +32,12 @@ export function useCategorySubmition({
         onSuccess: () => {
           setClickedModal(false);
         },
+        onError: (err) => {
+          setRequestError(err.message);
+        },
       });
     }
   }
-
-  useEffect(
-    function () {
-      if (image !== null) {
-        clearErrors("image");
-      }
-    },
-    [image, clearErrors],
-  );
 
   return { onSubmit };
 }
